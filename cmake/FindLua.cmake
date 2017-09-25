@@ -152,6 +152,10 @@ endif ()
 unset(_lua_include_subdirs)
 unset(_lua_append_versions)
 
+set(_CMAKE_FIND_LIBRARY_SUFFIXES_save "${CMAKE_FIND_LIBRARY_SUFFIXES}")
+if (";${CMAKE_FIND_LIBRARY_SUFFIXES};" MATCHES ";.so;")
+  list(APPEND CMAKE_FIND_LIBRARY_SUFFIXES .so.0 .so.1)
+endif()
 find_library(LUA_LIBRARY
   NAMES ${_lua_library_names} lua
   HINTS
@@ -165,6 +169,8 @@ find_library(LUA_LIBRARY
   /opt/csw
   /opt
 )
+set(CMAKE_FIND_LIBRARY_SUFFIXES "${_CMAKE_FIND_LIBRARY_SUFFIXES_save}")
+unset(_CMAKE_FIND_LIBRARY_SUFFIXES_save)
 unset(_lua_library_names)
 
 if (LUA_LIBRARY)
